@@ -79,9 +79,8 @@ class ItemCF(object):
         if self.normalized:
             for i in itemPool:
                 max_i = sorted(self.W[i].items(), key=lambda x: x[1], reverse=True)[0][1]
-                for j in itemPool:
-                    if i != j:
-                        self.W[i][j] = self.W[i][j] / max_i
+                for j in self.W[i].keys():
+                    self.W[i][j] = self.W[i][j] / max_i
 
 
 
