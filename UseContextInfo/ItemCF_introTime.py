@@ -10,7 +10,7 @@ import time
 
 
 class ItemCF_introTime(object):
-    def __init__(self, alpha=0.25, beta = 0.1,normalized=False):
+    def __init__(self, alpha=0.3, beta = 0.15,normalized=False):
         """
             @function: 算法参数初始化
             @param:
@@ -66,6 +66,7 @@ class ItemCF_introTime(object):
                 j_num = len(self.itemUser[itemPool[j]])
                 # 计算两件物品的相似度
                 self.W[itemPool[i]][itemPool[j]] = _num / math.sqrt(i_num * j_num)
+                self.W[itemPool[j]][itemPool[i]] = self.W[itemPool[i]][itemPool[j]]
 
         # 若为True 则归一化相似度矩阵
         if self.normalized:
@@ -127,5 +128,11 @@ if __name__ == "__main__":
     data = pd.read_csv('data/ml-100k/ua.base', sep='\\t', header=None, names=["userId", "movieId", "rating", "timestamp"],engine='python')
     clf = ItemCF_introTime()
     clf.fit(data)
-    y_ = clf.recommendProducts(3)
+    y_ = clf.recommendProducts(1)
     print(y_)
+"""
+[(219, 0.08597836994143529), (381, 0.009681952762951833), (790, 0.00594245383225892),
+ (82, 0.005868149531838061), (356, 0.005285362358930149), (54, 0.004813937799891269),
+ (583, 0.004467078186209232), (155, 0.0032384672471995795), (101, 0.0030912479264512197),
+ (158, 0.0029644804978702206)]
+"""
