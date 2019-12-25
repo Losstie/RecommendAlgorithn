@@ -61,6 +61,7 @@ class ItemCF(object):
                     i_num = len(self.itemUser[itemPool[i]])
                     j_num = len(self.itemUser[itemPool[j]])
                     self.W[itemPool[i]][itemPool[j]] = _num / math.sqrt(i_num * j_num)
+                    self.W[itemPool[j]][itemPool[i]] = self.W[itemPool[i]][itemPool[j]]
         else:
             # harrypotter 惩罚热门物品
             for i in range(itemNum - 1):
