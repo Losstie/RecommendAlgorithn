@@ -86,8 +86,8 @@ class UserCF(object):
                 else:
                     if item not in rankPool:
                         # 隐反馈数据集  这里的self.ratingDict[user][history_i] 都为1
-                        rankPool[item] = w_uv * self.ratingDict[u][item]
+                        rankPool[item] = w_uv * self.ratingDict[item][u]
                     else:
-                        rankPool[item] += w_uv * self.ratingDict[u][item]
+                        rankPool[item] += w_uv * self.ratingDict[item][u]
         rank = sorted(rankPool.items(), key=lambda x: x[1], reverse=True)[0:TopN]
         return rank
