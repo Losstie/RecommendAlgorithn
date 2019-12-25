@@ -15,7 +15,7 @@ a = parser.parse_args()
 
 if __name__ == "__main__":
     if a.mode == "train":
-        data = pd.read_csv('../data/movielens/ratings.dat', sep='::', header=None, names=["userId", "movieId", "rating", "timestamp"],engine='python')
+        data = pd.read_csv('../data/ml-100k/ua.base', sep='\\t', header=None, names=["userId", "movieId", "rating", "timestamp"],engine='python')
         data.drop(columns=["timestamp"], inplace=True)
         clf = ItemCF(method=a.method, alpha=a.alpha, normalized=a.normalized)
         clf.fit(data)
