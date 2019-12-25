@@ -20,7 +20,7 @@ class UserCF(object):
         # 获得列名列表
         self.COLUMNS = train.columns
         # index:userId list:itemIdList
-        user_items = train.groupby(self.COLUMNS[0]).agg(list)[self.COLUMNS[1]]
+        user_items = train.groupby(self.COLUMNS[0]).agg([list])[self.COLUMNS[1]]
         # 转化为用户-物品-分数字典 {user: {item: rating}}
         self.ratingDict = dict()
         for _, row in train.iterrows():
@@ -35,14 +35,14 @@ class UserCF(object):
 
         if self.method == 'base':
             for i in range(userNum - 1):
-            for j in range(i+1, userNum):
-                common_item = set(self.userItem[userPool[i]]) & set(self.userItem[userPool[j]])
-                i_num = len(self.userItem[userPool[i]])
-                j_num = len(self.userItem[userPool[j]])
-                self.W[userPool[i]][userPool[j]] = len(common_item) / math.sqrt(i_num * j_num)
-                self.W[userPool[j]][userPool[i]] = self.W[userPool[i]][userPool[j]]
+                for j in range(i+1, userNum):
+                    common_item = set(self.userItem[userPool[i]]) & set(self.userItem[userPool[j]])
+                    i_num = len(self.userItem[userPool[i]])
+                    j_num = len(self.userItem[userPool[j]])
+                    self.W[userPool[i]][userPool[j]] = len(common_item) / math.sqrt(i_num * j_num)
+                    self.W[userPool[j]][userPool[i]] = self.W[userPool[i]][userPool[j]]
         # User-IIF
-        elif method == 'IIF'
+        elif method == 'IIF':
             for i in range(userNum - 1):
                 for j in range(i+1, userNum):
                     common_item = set(self.userItem[userPool[i]]) & set(self.userItem[userPool[j]])
