@@ -63,6 +63,7 @@
 
 ##### 1.1.2 基于物品的协同过滤算法
  - [ItemCF](https://github.com/Losstie/RecommendAlgorithn/tree/master/ItemCF)
+ - [引入时间的ItemCF](https://github.com/Losstie/RecommendAlgorithn/blob/master/UseContextInfo/ItemCF_introTime.py)
 
 #### 1.2 Model-based method
 
