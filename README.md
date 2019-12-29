@@ -58,6 +58,12 @@
 
 #### 1.1 Memory-based method
 
+##### 1.1.1 基于用户的协同过滤算法
+ - [UserCF](https://github.com/Losstie/RecommendAlgorithn/tree/master/UserCF)
+
+##### 1.1.2 基于物品的协同过滤算法
+ - [ItemCF](https://github.com/Losstie/RecommendAlgorithn/tree/master/ItemCF)
+
 #### 1.2 Model-based method
 
 ##### 1.2.1 基于矩阵分解的协同过滤
@@ -68,10 +74,6 @@
  - [BiasSVD](https://github.com/Losstie/RecommendAlgorithn/tree/master/BiasSVD)
 
 ###### 1.2.1.2 分解机(Factorization Machine)
-
-- [待补充](#)
-
-###### 1.2.1.3 张量分解（Tensor Factorization）
 
 - [待补充](#)
 
