@@ -31,19 +31,25 @@ class UserCF(object):
         # 用户池
         userPool = list(user_items.index)
         userNum = len(userPool)
-        self.W = dict(zip(userPool , [{}]*userNum))
+        self.W = {}
 
         if self.method == 'base':
             for i in range(userNum - 1):
+                if userPool[i] not in self.W:
+                    self.W[userPool[i]] = {}
                 for j in range(i+1, userNum):
                     common_item = set(self.userItem[userPool[i]]) & set(self.userItem[userPool[j]])
                     i_num = len(self.userItem[userPool[i]])
                     j_num = len(self.userItem[userPool[j]])
                     self.W[userPool[i]][userPool[j]] = len(common_item) / math.sqrt(i_num * j_num)
-                    self.W[userPool[j]][userPool[i]] = self.W[userPool[i]][userPool[j]]
+                    if userPool[j] not in self.W:
+                        self.W[userPool[j]] = {}
+                        self.W[userPool[j]][userPool[i]] = self.W[userPool[i]][userPool[j]]
         # User-IIF
         elif method == 'IIF':
             for i in range(userNum - 1):
+                if userPool[i] not in self.W:
+                    self.W[userPool[i]] = {}
                 for j in range(i+1, userNum):
                     common_item = set(self.userItem[userPool[i]]) & set(self.userItem[userPool[j]])
                     _num = 0
@@ -52,7 +58,9 @@ class UserCF(object):
                     i_num = len(self.userItem[userPool[i]])
                     j_num = len(self.userItem[userPool[j]])
                     self.W[userPool[i]][userPool[j]] = _num / math.sqrt(i_num * j_num)
-                    self.W[userPool[j]][userPool[i]] = self.W[userPool[i]][userPool[j]]
+                    if userPool[j] not in self.W:
+                        self.W[userPool[j]] = {}
+                        self.W[userPool[j]][userPool[i]] = self.W[userPool[i]][userPool[j]]
         else:
             return
     def predict(self, user_A, user_B):
