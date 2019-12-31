@@ -51,22 +51,28 @@ class ItemCF_introTime(object):
         # 物品池
         itemPool = list(items_users.index)
         itemNum = len(itemPool)
-        self.W = dict(zip(itemPool , [{}]*itemNum))
+        self.W = {}
 
         # IUF 惩罚活跃度高的用户
         for i in range(itemNum - 1):
+            i_item = itemPool[i]
+            if i_item not in self.W:
+                self.W[i_item] = {}
             for j in range(i+1, itemNum):
-                common_user = set(self.itemUser[itemPool[i]]) & set(self.itemUser[itemPool[j]])
+                j_item = itemPool[j]
+                common_user = set(self.itemUser[i_item]) & set(self.itemUser[j_item])
                 _num = 0
                 for u in common_user:
                     # 计算用户对这两个物品记录的时间衰减数
-                    tweak = self.timeweak(self.ratingDict[u][itemPool[i]]['time'], self.ratingDict[u][itemPool[j]]['time'])
+                    tweak = self.timeweak(self.ratingDict[u][i_item]['time'], self.ratingDict[u][j_item]['time'])
                     _num +=  tweak / math.log(1+len(self.ratingDict[u].keys()))
-                i_num = len(self.itemUser[itemPool[i]])
-                j_num = len(self.itemUser[itemPool[j]])
+                i_num = len(self.itemUser[i_item])
+                j_num = len(self.itemUser[j_item])
                 # 计算两件物品的相似度
-                self.W[itemPool[i]][itemPool[j]] = _num / math.sqrt(i_num * j_num)
-                self.W[itemPool[j]][itemPool[i]] = self.W[itemPool[i]][itemPool[j]]
+                self.W[i_item][j_item] = _num / math.sqrt(i_num * j_num)
+                if j_item not in self.W:
+                    self.W[j_item] = {}
+                self.W[j_item][i_item] = self.W[i_item][j_item]
 
         # 若为True 则归一化相似度矩阵
         if self.normalized:

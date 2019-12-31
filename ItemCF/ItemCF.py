@@ -39,42 +39,60 @@ class ItemCF(object):
         # 物品池
         itemPool = list(items_users.index)
         itemNum = len(itemPool)
-        self.W = dict(zip(itemPool , [{}]*itemNum))
+        self.W = {}
 
         # 计算相似度矩阵 base iuf harryPotter
         if self.method=="base":
             for i in range(itemNum - 1):
+                i_item = itemPool[i]
+                if i_item not in self.W:
+                    self.W[i_item] = {}
                 for j in range(i+1, itemNum):
-                    i_num = len(self.itemUser[itemPool[i]])
-                    j_num = len(self.itemUser[itemPool[j]])
-                    common_num = len(set(self.itemUser[itemPool[i]]) & set(self.itemUser[itemPool[j]]))
-                    self.W[itemPool[i]][itemPool[j]] = 1.0 * common_num / math.sqrt(i_num * j_num)
-                    self.W[itemPool[j]][itemPool[i]] = self.W[itemPool[i]][itemPool[j]]
+                    j_item = itemPool[j]
+                    i_num = len(self.itemUser[i_item])
+                    j_num = len(self.itemUser[j_item])
+                    common_num = len(set(self.itemUser[i_item]) & set(self.itemUser[j_item]))
+                    self.W[i_item][j_item] = 1.0 * common_num / math.sqrt(i_num * j_num)
+                    if j_item not in self.W:
+                        self.W[j_item] = {}
+                    self.W[j_item][i_item] = self.W[i_item][j_item]
         elif self.method=="iuf":
             # IUF 惩罚活跃度高的用户
             for i in range(itemNum - 1):
+                i_item = itemPool[i]
+                if i_item not in self.W:
+                    self.W[i_item] = {}
                 for j in range(i+1, itemNum):
-                    common_user = set(self.itemUser[itemPool[i]]) & set(self.itemUser[itemPool[j]])
+                    j_item = itemPool[j]
+                    common_user = set(self.itemUser[i_item]) & set(self.itemUser[j_item])
                     _num = 0
                     for u in common_user:
                         _num += 1.0 / math.log(1+len(self.ratingDict[u].keys()))
-                    i_num = len(self.itemUser[itemPool[i]])
-                    j_num = len(self.itemUser[itemPool[j]])
-                    self.W[itemPool[i]][itemPool[j]] = _num / math.sqrt(i_num * j_num)
-                    self.W[itemPool[j]][itemPool[i]] = self.W[itemPool[i]][itemPool[j]]
+                    i_num = len(self.itemUser[i_item])
+                    j_num = len(self.itemUser[j_item])
+                    self.W[i_item][j_item] = _num / math.sqrt(i_num * j_num)
+                     if j_item not in self.W:
+                        self.W[j_item] = {}
+                    self.W[j_item][i_item] = self.W[i_item][j_item]
         else:
             # harrypotter 惩罚热门物品
             for i in range(itemNum - 1):
+                i_item = itemPool[i]
+                if i_item not in self.W:
+                    self.W[i_item] = {}
                 for j in range(i+1, itemNum):
+                    j_item = itemPool[j]
                     # 对物品i有历史行为的用户数量
-                    i_num = len(self.itemUser[itemPool[i]])
+                    i_num = len(self.itemUser[i_item])
                     # 对物品j有历史行为的用户数量
-                    j_num = len(self.itemUser[itemPool[j]])
+                    j_num = len(self.itemUser[j_item])
                     # 物品i和物品j的共现用户数量
-                    common_num = len(set(self.itemUser[itemPool[i]]) & set(self.itemUser[itemPool[j]]))
+                    common_num = len(set(self.itemUser[i_item]) & set(self.itemUser[j_item]))
                     # 计算物品i与j的相似度
-                    self.W[itemPool[i]][itemPool[j]] = 1.0 * common_num / (i_num**self.alpha * j_num**self.alpha)
-                    self.W[itemPool[j]][itemPool[i]] = self.W[itemPool[i]][itemPool[j]]
+                    self.W[i_item][j_item] = 1.0 * common_num / (i_num**self.alpha * j_num**self.alpha)
+                    if j_item not in self.W:
+                        self.W[j_item] = {}
+                    self.W[j_item][i_item] = self.W[i_item][j_item]
 
         # 若为True 则归一化相似度矩阵
         if self.normalized:

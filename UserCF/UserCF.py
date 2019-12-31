@@ -44,7 +44,7 @@ class UserCF(object):
                     self.W[userPool[i]][userPool[j]] = len(common_item) / math.sqrt(i_num * j_num)
                     if userPool[j] not in self.W:
                         self.W[userPool[j]] = {}
-                        self.W[userPool[j]][userPool[i]] = self.W[userPool[i]][userPool[j]]
+                    self.W[userPool[j]][userPool[i]] = self.W[userPool[i]][userPool[j]]
         # User-IIF
         elif method == 'IIF':
             for i in range(userNum - 1):
