@@ -76,7 +76,7 @@
 
 ###### 1.2.1.2 分解机(Factorization Machine)
 
-- [待补充](#)
+- [推荐算法之FM（因子分解机）模型，召回与排序的利器](https://www.cnblogs.com/rainbowly/p/12324128.html)
 
 ##### 1.2.2 关联算法做协调过滤推荐
 
